@@ -12,7 +12,7 @@ map = [
 
 describe KMeans do
   let(:new_cluster) { KMeans.new }
-  context "#new(map)" do
+  context "#new" do #this test is now irrelevant
     it "instantiates a new map without errors" do   
       new_cluster.map = map
       expect(new_cluster.map).to eq(map)

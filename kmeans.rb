@@ -90,12 +90,12 @@ class KMeans
   def cluster(k,points,max_iters)
     self.assignments = []
 
-    self.centers = [[1,1,1],[4,4,4],[0,3,2],[4,0,0]]
+    #self.centers = [[1,1,1],[4,4,4],[0,3,2],[4,0,0]]
+    self.centers = points.shuffle.take(k)
     points.each do |point|
       self.assignments << [point, centers[rand(0..centers.count-1)]]
     end
-    p assignments
-
+  
     changed = false
     iter = 0
     #5.times do
@@ -113,10 +113,10 @@ class KMeans
     groups = groups.group_by{|x| x[1]}
     better_group = {}
     groups.each{|k,v| better_group[k[1]] = v[0].flatten(1).uniq;}
-
+    puts better_group
+    better_group
     #p "These are the groups"
     #p groups
-    binding.pry
 
   end # end of cluster method
 end # end of class
