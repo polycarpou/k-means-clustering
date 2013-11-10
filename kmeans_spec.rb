@@ -11,9 +11,10 @@ map = [
 ]
 
 describe KMeans do
-  let(:new_cluster) { KMeans.new(map) }
+  let(:new_cluster) { KMeans.new }
   context "#new(map)" do
     it "instantiates a new map without errors" do   
+      new_cluster.map = map
       expect(new_cluster.map).to eq(map)
     end
   end

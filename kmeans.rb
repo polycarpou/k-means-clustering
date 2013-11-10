@@ -59,8 +59,8 @@ map =
 # until changed == true and iter <= MaxIters
 class KMeans
   attr_accessor :map, :points, :assignments, :centers
-  def initialize(map)
-    @map = map
+  def initialize
+    #@map = map
   end
   def for_print
     self.map.each do |row|
@@ -100,7 +100,12 @@ class KMeans
   end
 
   def distance(center, point)
-    (center[0] - point[0])**2 + (center[1] - point[1])**2
+    # (center[0] - point[0])**2 + (center[1] - point[1])**2
+    sum = 0
+    (0..center.count-1).each do |d|
+      sum += (center[d] - point[d])**2
+    end
+    sum
   end
 
   def reassign_groups(centers)
@@ -120,7 +125,7 @@ class KMeans
   def cluster(k,points,max_iters)
     self.assignments = []
 
-    self.centers = [[1,1],[1,2]]
+    self.centers = [[1,1],[4,4]]
     points.each do |point|
       self.assignments << [point, centers[rand(0..centers.count-1)]]
     end
@@ -139,16 +144,20 @@ class KMeans
   groups = self.centers.map do |center|
     self.assignments.select {|assignment| assignment[1] == center}
   end
-  groups = groups.collect {|group| group.collect{|x| x[0] }   }
-  p "These are the groups"
-  p groups
+  hard_group = groups.collect {|group| group.collect{|x| x[0] }   }
+  groups = groups.group_by{|x| x[1]}
+  better_group = {}
+  groups.each{|k,v| better_group[k[1]] = v[0].flatten(1).uniq;}
+
+  #p "These are the groups"
+  #p groups
   binding.pry
 
   end
 end
 
- algo = KMeans.new(map)
- points = [[4,2],[4,3],[4,4],[1,2],[1,3],[1,1],[3,2]]
+ algo = KMeans.new
+ points = [[4,2],[4,3],[4,4],[1,2],[1,3],[1,1],[3,2],[3,4],[4,4],[0,0],[0,1]]
 # algo.cluster(2,points,6)
 # algo.map = map
 # points = [[0,0],[1,0],[4,4],[4,3],[1,1],[3,4]]
@@ -156,7 +165,7 @@ end
 # # algo.cluster(3,points, 5)
 
 # #algo.calculate_new_centers(3)
- algo.cluster(2,points, 5)
+ algo.cluster(2,points, 10)
  p algo.centers
  p algo.assignments
 # p algo.assignments
