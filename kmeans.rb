@@ -1,13 +1,5 @@
 require 'pry'
 #require 'gruff'
-small_map = 
-[
-  [" "," ","█","█"," "],
-  [" "," "," "," ","█"],
-  [" ","█"," ","█","█"],
-  ["█","█"," "," "," "],
-  ["█","█"," ","█"," "]
-]
 map = 
 [
   ["-","-","-","-","-"],
@@ -24,39 +16,7 @@ map =
 #   |    ["█","█"," "," "," "],
 #   V    ["█","█"," ","█"," "]
 
-# input:
-#   E = e1,e2,e3 ... set of entities to be clustered
-#   k = number of clusters
-#   MaxIters = limit of iterations
-# output:
-#   C = c1,c2,c3,c4 .. set of cluster centroids
-#   L = set of cluster labels of E
 
-# foreach c 
-#   randomly assign e to a cluster
-# end
-
-# foreach e
-#   l(e) <-- argmin distance to each c
-# end
-
-# changed false
-# iter 0
-# do 
-#   foreach e do
-#     update cluster(ci)
-#   end
-
-#   for each e do
-#     minDist <-- argminDistance(ei,cj) j for 1..k
-#     if minDist != l(e) then
-#       l(ei) <- minDist
-#       changed <- true
-#     end
-#   end
-#   iter += 1
-
-# until changed == true and iter <= MaxIters
 class KMeans
   attr_accessor :map, :points, :assignments, :centers
   def initialize
@@ -85,17 +45,22 @@ class KMeans
       group_arr = assignments.select do |assignment|
         assignment[1] == group
       end
-      sum_x = 0
-      sum_y = 0
+      sum = []
+      mean = []
+      (0..group.count-1).each do |d|  
+        sum[d] = 0
+      end
       group_arr.each do |point|
-        sum_x += point[0][0]
-        sum_y += point[0][1]
+        (0..group.count-1).each do |d|
+          sum[d] += point[0][d]
+        end
       end
       if group_arr.count != 0
-        mean_x = sum_x/group_arr.count
-        mean_y = sum_y/group_arr.count
+        (0..group.count-1).each do |d|
+          mean[d] = sum[d]/group_arr.count
+        end
       end
-      [mean_x, mean_y]
+      mean
     end
   end
 
@@ -125,7 +90,7 @@ class KMeans
   def cluster(k,points,max_iters)
     self.assignments = []
 
-    self.centers = [[1,1],[4,4]]
+    self.centers = [[1,1,1],[4,4,4],[0,3,2],[4,0,0]]
     points.each do |point|
       self.assignments << [point, centers[rand(0..centers.count-1)]]
     end
@@ -141,31 +106,24 @@ class KMeans
     end  while iter <= max_iters
 
   
-  groups = self.centers.map do |center|
-    self.assignments.select {|assignment| assignment[1] == center}
-  end
-  hard_group = groups.collect {|group| group.collect{|x| x[0] }   }
-  groups = groups.group_by{|x| x[1]}
-  better_group = {}
-  groups.each{|k,v| better_group[k[1]] = v[0].flatten(1).uniq;}
+    groups = self.centers.map do |center|
+      self.assignments.select {|assignment| assignment[1] == center}
+    end
+    hard_group = groups.collect {|group| group.collect{|x| x[0] }   }
+    groups = groups.group_by{|x| x[1]}
+    better_group = {}
+    groups.each{|k,v| better_group[k[1]] = v[0].flatten(1).uniq;}
 
-  #p "These are the groups"
-  #p groups
-  binding.pry
+    #p "These are the groups"
+    #p groups
+    binding.pry
 
-  end
-end
+  end # end of cluster method
+end # end of class
 
  algo = KMeans.new
- points = [[4,2],[4,3],[4,4],[1,2],[1,3],[1,1],[3,2],[3,4],[4,4],[0,0],[0,1]]
-# algo.cluster(2,points,6)
-# algo.map = map
-# points = [[0,0],[1,0],[4,4],[4,3],[1,1],[3,4]]
-# algo.mappoints(points)
-# # algo.cluster(3,points, 5)
+ #points = [[4,2],[4,3],[4,4],[1,2],[1,3],[1,1],[3,2],[3,4],[4,4],[0,0],[0,1]]
+ points = [[4,2,1],[4,3,2],[4,4,3],[1,2,4],[1,3,4],[1,1,0],[3,2,1],[3,4,2],[4,4,3],[0,0,4],[0,1,2]]
 
-# #algo.calculate_new_centers(3)
- algo.cluster(2,points, 10)
- p algo.centers
- p algo.assignments
+ algo.cluster(3,points, 10)
 # p algo.assignments
