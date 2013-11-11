@@ -1,0 +1,62 @@
+<%= form_for(@user) do |f| %>
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+      <ul>
+      <% @user.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+  <h3>Please say from 0 to 10 how much you like the following:</h3>
+  <div class="field">
+    <%= f.label "chocolate" %><br>
+    <%= f.number_field :q1 %>
+  </div>
+  <div class="field">
+    <%= f.label "coffee" %><br>
+    <%= f.number_field :q2 %>
+  </div>
+  <div class="field">
+    <%= f.label "jimmy eat world" %><br>
+    <%= f.number_field :q3 %>
+  </div>
+  <div class="field">
+    <%= f.label "green eggs and ham" %><br>
+    <%= f.number_field :q4 %>
+  </div>
+  <div class="field">
+    <%= f.label "amoeba circuses" %><br>
+    <%= f.number_field :q5 %>
+  </div>
+  <div class="field">
+    <%= f.label "structure" %><br>
+    <%= f.number_field :q6 %>
+  </div>
+  <div class="field">
+    <%= f.label "peanut butter" %><br>
+    <%= f.number_field :q7 %>
+  </div>
+  <div class="field">
+    <%= f.label "parfait" %><br>
+    <%= f.number_field :q8 %>
+  </div>
+  <div class="field">
+    <%= f.label "magic the gathering" %><br>
+    <%= f.number_field :q9 %>
+  </div>
+  <div class="field">
+    <%= f.label "bread" %><br>
+    <%= f.number_field :q10 %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

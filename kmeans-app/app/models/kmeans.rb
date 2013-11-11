@@ -1,13 +1,13 @@
-require 'pry'
+#require 'pry'
 #require 'gruff'
-map = 
-[
-  ["-","-","-","-","-"],
-  ["-","-","-","-","-"],
-  ["-","-","-","-","-"],
-  ["-","-","-","-","-"],
-  ["-","-","-","-","-"]
-]
+# map = 
+# [
+#   ["-","-","-","-","-"],
+#   ["-","-","-","-","-"],
+#   ["-","-","-","-","-"],
+#   ["-","-","-","-","-"],
+#   ["-","-","-","-","-"]
+# ]
 # Coordinates
 #        [0,0][1,0][2,0]-->
 # [0,0]  [" "," ","█","█"," "],
@@ -17,7 +17,7 @@ map =
 #   V    ["█","█"," ","█"," "]
 
 
-class KMeans
+class Kmeans
   attr_accessor :map, :points, :assignments, :centers
   def initialize
     #@map = map
@@ -109,10 +109,10 @@ class KMeans
     groups = self.centers.map do |center|
       self.assignments.select {|assignment| assignment[1] == center}
     end
-    hard_group = groups.collect {|group| group.collect{|x| x[0] }   }
+   #hard_group = groups.collect {|group| group.collect{|x| x[0] }   }
     groups = groups.group_by{|x| x[1]}
     better_group = {}
-    groups.each{|k,v| better_group[k[1]] = v[0].flatten(1).uniq;}
+    groups.each{|k,v| better_group[k[1]] = v[0].flatten(1).uniq}
     puts better_group
     better_group
     #p "These are the groups"
@@ -121,10 +121,10 @@ class KMeans
   end # end of cluster method
 end # end of class
 
- algo = KMeans.new
+# algo = KMeans.new
  #points = [[4,2],[4,3],[4,4],[1,2],[1,3],[1,1],[3,2],[3,4],[4,4],[0,0],[0,1]]
 # points = [[4,2,1],[4,3,2],[4,4,3],[1,2,4],[1,3,4],[1,1,0],[3,2,1],[3,4,2],[4,4,3],[0,0,4],[0,1,2]]
- points = [[4,2,1,3],[4,3,2,2],[4,4,3,1],[1,2,4,4],[1,3,4,0],[1,1,0,0],[3,2,1,2],[3,4,2,1],[4,4,3,2],[0,0,4,4],[0,1,2,0]]
+# points = [[4,2,1,3],[4,3,2,2],[4,4,3,1],[1,2,4,4],[1,3,4,0],[1,1,0,0],[3,2,1,2],[3,4,2,1],[4,4,3,2],[0,0,4,4],[0,1,2,0]]
 
- algo.cluster(3,points, 10)
+# algo.cluster(3,points, 10)
 # p algo.assignments
