@@ -115,6 +115,7 @@ class KMeans
     groups.each{|k,v| better_group[k[1]] = v[0].flatten(1).uniq}
     puts better_group
     better_group
+    raise
     #p "These are the groups"
     #p groups
 

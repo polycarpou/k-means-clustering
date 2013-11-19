@@ -19,26 +19,6 @@
 
 class Kmeans
   attr_accessor :map, :points, :assignments, :centers
-  def initialize
-    #@map = map
-  end
-  def for_print
-    self.map.each do |row|
-      row.each do |box|
-        print box
-      end
-      puts
-    end
-  end
-
-  def mappoints(points)
-    points.each do |point|
-      x = point[0]
-      y = point[1]
-      self.map[x][y] = "o"
-    end
-    for_print
-  end
 
   def calculate_new_centers(k)
     self.centers.map do |group|
@@ -74,8 +54,6 @@ class Kmeans
   end
 
   def reassign_groups(centers)
-   #old_assignments = assignments
-   #p "old_assignments #{assignments}"
     assignments.each do |assignment|
       point = assignment[0]
       new_group = centers.min_by do |center|
@@ -96,28 +74,17 @@ class Kmeans
       self.assignments << [point, centers[rand(0..centers.count-1)]]
     end
   
-    changed = false
     iter = 0
-    #5.times do
     begin 
       self.centers = calculate_new_centers(k)
       reassign_groups(centers)
       iter += 1
     end  while iter <= max_iters
 
-  
-    groups = self.centers.map do |center|
-      self.assignments.select {|assignment| assignment[1] == center}
-    end
-   #hard_group = groups.collect {|group| group.collect{|x| x[0] }   }
-    groups = groups.group_by{|x| x[1]}
-    better_group = {}
-    groups.each{|k,v| better_group[k[1]] = v[0].flatten(1).uniq}
-    puts better_group
-    better_group
-    #p "These are the groups"
-    #p groups
-
+    clean_hash = Hash[*assignments.flatten(1)]
+    inverse = Hash.new() { |hash, key| hash[key] = []; }
+    clean_hash.each_pair() { |key, value| inverse[value].push(key); }
+    inverse
   end # end of cluster method
 end # end of class
 

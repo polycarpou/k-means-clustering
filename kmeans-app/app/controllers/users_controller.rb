@@ -5,13 +5,13 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
     @users = User.all
-    @clusters = Kmeans.new
-    points = []
-    @users.each do |user|
-      points << [user.q1,user.q2,user.q3,user.q4,user.q5,user.q6,user.q7,user.q8,user.q9,user.q10]
-    end
+  # @clusters = Kmeans.new
+  # points = []
+  # @users.each do |user|
+  #   points << [user.q1,user.q2,user.q3,user.q4,user.q5,user.q6,user.q7,user.q8,user.q9,user.q10]
+  # end
     #points = [[4,2,1,3],[4,3,2,2],[4,4,3,1],[1,2,4,4],[1,3,4,0],[1,1,0,0],[3,2,1,2],[3,4,2,1],[4,4,3,2],[0,0,4,4],[0,1,2,0]]
-    @clusters = @clusters.cluster(3,points,10)
+  # @clusters = @clusters.cluster(3,points,10)
   end
 
   # GET /users/1
@@ -32,6 +32,7 @@ class UsersController < ApplicationController
       end
     end
     same_clustered_users = @clusters[center.first].map do |p|
+   #same_clustered_users = @clusters[center].map do |p|
       User.find_by(q1: p[0], q2: p[1], q3: p[2], q4: p[3], q5: p[4], q6: p[5], q7: p[6], q8: p[7], q9: p[8], q10: p[9])
     end
     s = same_clustered_users.compact.reject{|x| x.id.to_s  == params[:id]}
